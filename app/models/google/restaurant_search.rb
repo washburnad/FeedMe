@@ -1,5 +1,7 @@
 module Google
   class RestaurantSearch
+    attr_reader :error, :response
+
     def initialize(params)
       @keyword = params[:keyword]
       @latitude = params[:latitude]
@@ -9,6 +11,12 @@ module Google
 
     def run
       make_request
+      
+      @response = @request.response
+    rescue GoogleApi::GoogleRequestError => error 
+      @error = error.message
+      
+      false
     end
 
     private 
@@ -22,7 +30,7 @@ module Google
     end
 
     def make_request
-      @search_response = GoogleApi::GetNearbyLocationsRequest.new(
+      @request = GoogleApi::GetNearbyLocationsRequest.new(
         config: config,
         keyword: keyword,
         latitude: latitude,
