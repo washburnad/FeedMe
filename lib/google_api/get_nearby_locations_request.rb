@@ -1,7 +1,8 @@
 module GoogleApi
   class GetNearbyLocationsRequest
-    def initialize(config:, latitude:, longitude:, type:)
+    def initialize(config:, keyword: nil, latitude:, longitude:, type:)
       @config = config
+      @keyword = keyword
       @latitude = latitude
       @longitude = longitude
       @type = type
@@ -24,17 +25,18 @@ module GoogleApi
 
     def query
       {
+        keyword: keyword,
         location: location,
         radius: 1500,
         type: type,
         key: config.api_key
-      }
+      }.compact
     end
 
     def uri
       "#{config.base_uri}/maps/api/place/nearbysearch/json"
     end
 
-    attr_reader :config, :latitude, :longitude, :type
+    attr_reader :config, :keyword, :latitude, :longitude, :type
   end
 end

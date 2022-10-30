@@ -1,6 +1,7 @@
 module Google
   class RestaurantSearch
     def initialize(params)
+      @keyword = params[:keyword]
       @latitude = params[:latitude]
       @longitude = params[:longitude]
       @type = params[:type] || 'restaurant'
@@ -12,7 +13,7 @@ module Google
 
     private 
 
-    attr_reader :latitude, :longitude, :type
+    attr_reader :keyword, :latitude, :longitude, :type
 
     def config
       GoogleApi::Config.new.tap do |config|
@@ -23,6 +24,7 @@ module Google
     def make_request
       @search_response = GoogleApi::GetNearbyLocationsRequest.new(
         config: config,
+        keyword: keyword,
         latitude: latitude,
         longitude: longitude,
         type: type

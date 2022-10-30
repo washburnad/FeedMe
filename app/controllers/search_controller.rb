@@ -6,6 +6,6 @@ class SearchController < ApplicationController
   end 
 
   def search_params
-    params.require(:search).permit(:latitude, :longitude)
+    params.require(:search).permit(:keyword, :latitude, :longitude)
   end
 end
