@@ -1,35 +1,42 @@
 module GoogleApi
   class GetNearbyLocationsRequest
-    def initialize(config: config, type: 'restaurant')
+    def initialize(config:, latitude:, longitude:, type:)
       @config = config
+      @latitude = latitude
+      @longitude = longitude
       @type = type
     end
 
-    def run
-      require 'pry'; binding.pry
-
-    end
-
-    private 
-
-    def make_request
+    def run   
+    require 'pry'; binding.pry
+          
       HTTParty.get( 
-        base_uri: config.base_uri,
-        path: 'maps/api/place/nearbysearch/json'
+        uri,
         query: query
       )
     end
 
+    private 
+
+    def location 
+      ERB::Util.url_encode("#{latitude},#{longitude}")
+
+      "#{latitude},#{longitude}"
+    end
+
     def query
       {
-        # location=-33.8670522%2C151.1957362,
-        # radius=1500,
+        location: location,
+        radius: 1500,
         type: type,
-        # keyword=cruise,
         key: config.api_key
       }
     end
 
-    attr_reader :config, :type
+    def uri
+      "#{config.base_uri}/maps/api/place/nearbysearch/json"
+    end
+
+    attr_reader :config, :latitude, :longitude, :type
   end
 end
