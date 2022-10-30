@@ -7,9 +7,7 @@ module GoogleApi
       @type = type
     end
 
-    def run   
-    require 'pry'; binding.pry
-          
+    def run          
       HTTParty.get( 
         uri,
         query: query

@@ -8,8 +8,6 @@ module Google
 
     def run
       make_request
-
-      require 'pry'; binding.pry
     end
 
     private 
